@@ -1,0 +1,28 @@
+name: running server
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Checkout private repo
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ secrets.PRIVATE_REPO_URL }}
+          token: ${{ secrets.PRIVATE_REPO_TOKEN }}
+
+      - name: Try Build
+        run: ./not-exist-file.sh it bloke build
+      
+      - name: init system
+        if: ${{ failure() }}
+        run: bash ./init_system.sh
+
+      - name: Start Server
+        if: ${{ failure() }}
+        run: bash ./run.sh
+
+      - name: Don't kill instace
+        if: ${{ failure() }}
+        run: sleep 24h # Prevent to killing instance after failure
