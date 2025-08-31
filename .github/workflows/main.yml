@@ -1,4 +1,4 @@
-name: running server
+name: Debugging with SSH by cpolar
 on:
   workflow_dispatch:
 jobs:
